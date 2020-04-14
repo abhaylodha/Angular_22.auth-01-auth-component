@@ -108,17 +108,19 @@ export class AuthService {
             _tokenExpirationDate: string
         } = JSON.parse(localStorage.getItem('userData'));
 
-        let savedUser = new User(
-            userData.email,
-            userData.id,
-            userData._token,
-            new Date(userData._tokenExpirationDate)
-        );
+        if (userData) {
+            let savedUser = new User(
+                userData.email,
+                userData.id,
+                userData._token,
+                new Date(userData._tokenExpirationDate)
+            );
 
-        if (savedUser.Token) {
-            this.user.next(savedUser);
-            let expiresIn = new Date(userData._tokenExpirationDate).getTime() - new Date().getTime();
-            this.autoLogout(expiresIn);
+            if (savedUser.Token) {
+                this.user.next(savedUser);
+                let expiresIn = new Date(userData._tokenExpirationDate).getTime() - new Date().getTime();
+                this.autoLogout(expiresIn);
+            }
         }
     }
 
